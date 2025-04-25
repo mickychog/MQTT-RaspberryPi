@@ -14,7 +14,7 @@
 <h3 align="center">MQTT Communication</h3>
 
   <p align="center">
-    MQTT server that handles robotics actions in the raspberry
+    MQTT project to handle publish/subscriber messages
     <br />
     <a href="https://github.com/mickychog/MQTT-RaspberryPi/blob/main/README.md"><strong>Explore the docs »</strong></a>
     <br />
@@ -46,21 +46,21 @@
 
 ## Acerca Del Proyeto
 
-`MQTT Communication` es un proyecto basico Open Source que permite crear la comunicacion entre un host MQTT y cualquier otro host mediante el protocolo MQTT permitiendo la comunicacion mediante el patron MQTT.
+`MQTT Communication` es un proyecto basico Open Source que permite crear la comunicacion entre un host y cualquier otro host mediante el protocolo MQTT permitiendo la comunicacion por envio de mensajes.
 
 Este es un inicio basico para trabajar con Python usando un publicador y un suscriptor
 
-- EL protocolo MQTT permite crear un topico por el cual se comunican mediante el mismo topico, esto para enviar mensajes
+- EL protocolo MQTT permite crear un topico por el cual se comunican mediante el mismo topico, esto para enviar mensajes en el caso del proyecto es el `"ALSW/ORDEN"`
 - El `Payload` resulta tan ligero que es posible realizar proyectos de domotica
 
 ## Hardware Necesario
 
 > [!IMPORTANT]
-> El `Hardware` necesario para este proyecto dependera de la implementacion del usurio, en este caso el proyecto de ejemplo solo usara un led para hacer `testing` del protocolo
+> El `Hardware` necesario para este proyecto dependera de la implementacion del usurio, en este caso el proyecto usara un motor paso a paso
 
 - Raspberry pi
-- 3 Leds
-- 3 Resistencias
+- Motor paso a paso
+- Motor Driver L298N
 - Jumpers
 
 ## Configuracion de entorno previa
@@ -76,11 +76,16 @@ $ sudo systemctl start pigpiod
 
 ## Descarga
 
+Al clonar el repositorio tener en cuenta los archivos y sus respectivas funciones, siendo el `mqtt_pub.py` el ejecutable para cualquier entorno con _Python_ desde donde se quiera enviar los mensajes al servidor MQTT y `mqtt_sub.py` el que sera instalado en el _Raspberry_ para ejecutar las acciones hechas con los pines `GPIO`
+
+El proyecto ejecutado en el Raspberry utiliza las dependencias definidas en el archivo `requirements.txt`, en esta seccion crearemos un entorno virtual `venv` para ejecutar nuestro proyecto en python e instalaremos las dependencias
+
 ```
-$ git clone https://github.com/NicoZela23/CV-Robotic-Claw.git
-$ cd MQTT-RaspberryPi
-$ python -m venv clawENV
-$ source clawENV/bin/activate
+$ git clone https://github.com/mickychog/MQTT-RaspberryPi.git
+$ cd MQTT-RASPBERRY
+$ python -m venv env
+$ source env/bin/activate
+$ pip install -r requirements.txt
 ```
 
 ## Instalacion
@@ -91,11 +96,27 @@ El proyecto no requiere de una instalacion mas alla de la ejecucion del script d
 $ sudo python mqtt_sub.py
 ```
 
-Y el otro archivo dependera del entorno de ejecucion sin envargo el resultado sera el mismo al solo tenere que ejecutar el script
+Y el otro archivo dependera del entorno de ejecucion sin embargo el resultado sera el mismo al solo tener que ejecutar el script
 
 ## Configuracion del proyecto
 
-La base del proyecto es para encender y apagar leds con comandos enviados desde el host publicador sin embargo al estar usando los pines `GPIO` esto puede ser aplicado a cualquier implementacion de robotica
+La base del proyecto es para mover un motor paso a paso con comandos enviados desde el host publicador sin embargo al estar usando los pines `GPIO` esto puede ser aplicado a cualquier implementacion de robotica
+
+## Ejemplo de ejecucion
+
+Primero debemos ejecutar el `Subscriber` que en nuestro caso va a ser el codigo a ejecutar en el `Raspberry` para esperar los mensajes que llegaran del host `Publisher` para el cual debemos iniciar el script
+
+```
+python qtt_stepper.py
+```
+
+Y tendremos un respuesta como esta:
+
+<img src="assets/test1.png" alt="video-demo"/>
+
+Y en el host publicador sera esto:
+
+<img src="assets/test2.png" alt="video-demo"/>
 
 ## Tech Stack
 
